@@ -8,7 +8,6 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import make_pipeline
 import xgboost as xgb
-from yellowbrick.regressor import ResidualsPlot
 
 
 parser = argparse.ArgumentParser()
