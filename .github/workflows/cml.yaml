@@ -1,0 +1,24 @@
+name: CML
+on: 
+    push:
+        branches: 
+            - main
+jobs:
+  train-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v1
+      - name: Train model
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install -r requirements.txt
+          python train.py --cml_run
+      - name: Create CML report
+        run: |
+          cat metrics.txt >> report.md
+          echo "![](./residuals.png)" >> report.md
+          cml comment create report.md

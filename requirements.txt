@@ -1,0 +1,6 @@
+mlflow
+pandas
+pyarrow
+google-cloud-storage
+yellowbrick==1.5
+xgboost
