@@ -33,10 +33,12 @@ With this workflow we are training the model on the github server but there are 
 
 Also we will add DVC to load the data from the DVC remote so the GCS bucket. This will help us to automatically train the model updated data.
 
+This workflow will be triggered when we open a pull request to the main branch. This is a good practice because we want to make sure that our code is working before we merge it to the main branch.
+
 ```yaml
 name: CML
 on: 
-    push:
+    pull_request:
         branches: 
             - main
 jobs:
@@ -53,13 +55,16 @@ jobs:
         run: |
           echo "$GOOGLE_APPLICATION_CREDENTIALS" | base64 --decode | jq > credentials.json
           pip install -r requirements.txt
-          python train.py --cml_run
-          rm credentials.json
-      - name: Create CML report
-        run: |
+          echo "Pulling data from GCS..."
+          dvc remote modify --local myremote \
+                    credentialpath './credentials.json'
+          dvc pull
+          echo "Training model..."
+          python src/train.py --cml_run
           cat metrics.txt >> report.md
-          echo "![](./residuals.png)" >> report.md
-          cml comment create report.md
+          echo '![](./residuals.png "Residual Plot")' >> report.md
+          cml comment create report.md 
+          rm credentials.json
 ```
 
 But you also see in this workflow that there are environment variables. These are stored in the `secrets` of your github repository. You can add these secrets by going to your repository and clicking on `Settings` and then `Secrets`. Here you can add your secrets. In this case we need the `GOOGLE_APPLICATION_CREDENTIALS` to access our GCP bucket and the `MLFLOW_TRACKING_URI` to track our experiment with mlflow.
