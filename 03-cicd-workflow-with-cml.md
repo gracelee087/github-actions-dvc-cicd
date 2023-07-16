@@ -31,6 +31,8 @@ Also we added `argparse`to our code which allows us to pass the argument `--cml-
 Now we will create a `cml.yaml` file as a github workflow. This file will be used by CML to run our code. We run our `train.py` with the --cml-run argument and export a report with cml.
 With this workflow we are training the model on the github server but there are also ways to train the model on a cloud service like AWS or GCP with [cml-runners](https://cml.dev/doc/self-hosted-runners) but this is not covered in this course. If you want to train bigger models you should investigate this option.
 
+Also we will add DVC to load the data from the DVC remote so the GCS bucket. This will help us to automatically train the model updated data.
+
 ```yaml
 name: CML
 on: 
@@ -62,7 +64,7 @@ jobs:
 
 But you also see in this workflow that there are environment variables. These are stored in the `secrets` of your github repository. You can add these secrets by going to your repository and clicking on `Settings` and then `Secrets`. Here you can add your secrets. In this case we need the `GOOGLE_APPLICATION_CREDENTIALS` to access our GCP bucket and the `MLFLOW_TRACKING_URI` to track our experiment with mlflow.
 
-For the `Google Application Credentials` you need to create a service account in GCP and download the json file. Copy/pasting the content of a JSON is not recommended because it can cause formatting issues. Instead, you can encode the JSON file as a base64 string and paste the result in the secret value field. You can use the following command to encode the JSON file:
+For the `Google Application Credentials` you can use the one we created in the previous markdown. Copy/pasting the content of a JSON is not recommended because it can cause formatting issues. Instead, you can encode the JSON file as a base64 string and paste the result in the secret value field. You can use the following command to encode the JSON file:
 
 ```bash
 cat <path-to-json-file> | base64 | pbcopy

@@ -17,8 +17,13 @@ jobs:
         run: |
           echo "$GOOGLE_APPLICATION_CREDENTIALS" | base64 --decode | jq > credentials.json
           pip install -r requirements.txt
-          python train.py --cml_run
-      - name: Create CML report
-        run: |
+          echo "Pulling data from GCS..."
+          dvc remote modify --local myremote \
+                    credentialpath './credentials.json'
+          dvc pull
+          echo "Training model..."
+          python src/train.py --cml_run
           cat metrics.txt >> report.md
-          cml comment create report.md
+          echo '![](./residuals.png "Residual Plot")' >> report.md
+          cml comment create report.md 
+          rm credentials.json

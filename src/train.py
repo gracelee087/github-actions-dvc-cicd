@@ -30,16 +30,12 @@ mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 mlflow.set_experiment("green-taxi-trip-duration-xgb")
 
 # Set variables
-year = 2021
-month = 1
 color = "green"
 features = ["PULocationID", "DOLocationID", "trip_distance"]
 target = "duration"
 model_name = "green-taxi-trip-duration-xgb"
 
-df = pd.read_parquet(
-    f"https://d37ci6vzurychx.cloudfront.net/trip-data/{color}_tripdata_{year}-{month:02d}.parquet"
-)
+df = pd.read_parquet(f"data/green_tripdata_2021-01.parquet")
 
 
 def calculate_trip_duration_in_minutes(df):
@@ -77,8 +73,6 @@ with mlflow.start_run() as run:
         "model": "xgboost pipeline",
         "developer": "<your name>",
         "dataset": f"{color}-taxi",
-        "year": year,
-        "month": month,
         "features": features,
         "target": target,
     }
@@ -86,9 +80,13 @@ with mlflow.start_run() as run:
     pipeline = make_pipeline(DictVectorizer(), xgb.XGBRegressor())
     pipeline.fit(X_train, y_train)
 
-    y_pred = pipeline.predict(X_test)
-    rmse = mean_squared_error(y_test, y_pred, squared=False)
-    mlflow.log_metric("rmse", rmse)
+    y_pred_train = pipeline.predict(X_train)
+    rmse_train = mean_squared_error(y_train, y_pred_train, squared=False)
+    mlflow.log_metric("rmse train", rmse_train)
+
+    y_pred_test = pipeline.predict(X_test)
+    rmse_test = mean_squared_error(y_test, y_pred_test, squared=False)
+    mlflow.log_metric("rmse test", rmse_test)
 
     mlflow.sklearn.log_model(pipeline, "model")
 
@@ -99,8 +97,5 @@ with mlflow.start_run() as run:
 
 if cml_run:
     with open("metrics.txt", "w") as f:
-        f.write(f"rmse: {rmse}")
-
-    visualizer = ResidualsPlot(pipeline)
-    visualizer.fit(X_train, y_train)
-    visualizer.score(X_test, y_test)
+        f.write(f"RMSE on the Train Set: {rmse_train}")
+        f.write(f"RMSE on the Test Set: {rmse_test}")
