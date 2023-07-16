@@ -65,7 +65,7 @@ dvc remote modify --local myremote \
 And commit the changes:
 
 ```bash
-git commit -m "Add remote storage"
+git commit .dvc/config  -m "Add remote storage"
 ```
 
 And now you can push the data to the remote storage:
