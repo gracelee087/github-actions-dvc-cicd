@@ -62,7 +62,6 @@ jobs:
           echo "Training model..."
           python src/train.py --cml_run
           cat metrics.txt >> report.md
-          echo '![](./residuals.png "Residual Plot")' >> report.md
           cml comment create report.md 
           rm credentials.json
 ```
