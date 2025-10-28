@@ -1,17 +1,17 @@
 # Github Actions
 
-Github Actions is a CI/CD tool that is built into Github. It allows you to run workflows based on events that happen in your repository. For example, you can run a workflow when a pull request is opened, or when a new commit is pushed to a branch.
+**Github Actions** is a **CI/CD tool** that is built into Github. It allows you to run **workflows** based on **events** that happen in your repository. For example, you can run a workflow when a **pull request** is opened, or when a new commit is pushed to a branch.
 
-It allows you to run tests, build your code, and deploy your application all from one place. It also has a lot of built in integrations with other tools like Slack, Jira, and more.
+It allows you to run tests, build your code, and deploy your application all from one place. It also has a lot of **built in integrations** with other tools like Slack, Jira, and more.
 
-For example you can automatically run tests before merging a pull request or you automatically build a docker image when a new commit is pushed to a branch and then pushed to a docker registry. 
+For example you can automatically **run tests** before merging a pull request or you automatically **build a docker image** when a new commit is pushed to a branch and then pushed to a **docker registry**. 
 
 ## How to use Github Actions
 
-Let's start simple. We'll create a workflow that runs a test when a pull request is opened.
+Let's start simple. We'll create a **workflow** that runs a test when a pull request is opened.
 
 1. Create a new repository on Github
-2. Create a requierments.txt file with the following contents:
+2. Create a **requirements.txt file** with the following contents:
 
 ```
 pytest
