@@ -1,27 +1,27 @@
 # Intro to Data Version Control (DVC)
 
-**DVC** is a tool for **data versioning**, **data pipelines**, and **reproducibility**. It is naming itself Open-source, **Git-based data science**. It is developed by [iterative.ai](https://iterative.ai/). 
+[**DVC**](https://dvc.org/) is a tool for **data versioning**, **data pipelines**, and **reproducibility**. It is naming itself open-source, Git-based data science. It is developed by _iterative.ai_. 
 
 ## Basic uses of DVC
 
-DVC is used to organize your data and your code. It is a tool to **version your data** and your code. It is not a tool to version your models. For this you can use **mlflow**.
+DVC is used to organize your data and your code. It is a tool to version your data and your code, NOT your models (for this you can use MLflow).
 
 You can use it to:
-- track and save data the same way you capture code
-- compare model metrics among experiments
-- adopt engineering tools and best practices in data science projects
+- **track and save data** the same way you capture code
+- **compare model metrics** among experiments
+- **adopt engineering tools and best practices** in data science projects
 
 ## Data versioning
 
-DVC lets you capture the versions of your data and models in **Git commits**, while storing them on-premises or in **cloud storage**. It is not a storage solution. It is a tool to version your data and your code. DVC also enables **cross-project reusability** of these data artifacts. This means that your projects can depend on data from other repositories — like a package management system for data science.
+DVC lets you capture the versions of your data and models in **Git commits** while storing them on-premises or in cloud storage, although it is not a storage solution. DVC also enables **cross-project reusability** of these data artifacts. This means that your projects can depend on data from other repositories — like a package management system for data science.
 
-Let's try it out. We will use the green taxi data for January 2021:
+Let's try it out. We will use the Green Taxi data for January 2025:
 
 ```bash
-wget -P ./data https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2021-01.parquet
+wget -P ./data https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-01.parquet
 ```
 
-Now we have to **initialize the dvc repository**:
+Now we have to **initialize the DVC repository**:
 
 ```bash
 dvc init
@@ -29,18 +29,18 @@ dvc init
 
 This will create a `.dvc` folder. 
 
-You can add the local data to the dvc repository like this:
+You can add the local data to the DVC repository like this:
 
 ```bash
-dvc add ./data/green_tripdata_2021-01.parquet
+dvc add ./data/green_tripdata_2025-01.parquet
 ```
 
-DVC stores information about the added file in a **`.dvc` file** named `data/green_tripdata_2021-01.parquet.dvc`. This small, human-readable **metadata file** acts as a placeholder for the original data for the purpose of Git tracking.
+DVC stores information about the added file in a `.dvc` file named `data/green_tripdata_2025-01.parquet.dvc`. This small, human-readable **metadata file** acts as a placeholder for the original data for the purpose of Git tracking.
 
 The output will tell you what to do next:
 
 ```bash
-git add data/green_tripdata_2021-01.parquet.dvc
+git add data/green_tripdata_2025-01.parquet.dvc
 ```
 
 Now we can commit the changes:
@@ -49,7 +49,7 @@ Now we can commit the changes:
 git commit -m "Add data"
 ```
 
-But we want to add a **remote storage**. We will use **Google Cloud Storage (GCS)** for this. You can use any other storage provider like AWS S3 or Azure Blob Storage. First let's create a new bucket in GCS. And you need to create a **service account** in GCP (with `Storage Admin` and Google `Storage Object Admin` Roles) and download the json file. Then we can add the remote storage:
+But we want to add a **remote storage**. We will use Google Cloud Storage (GCS) for this (you can use any other storage provider like AWS S3 or Azure Blob Storage). First create a **new bucket** in GCS. Then create a **service account** (with `Storage Admin` and `Storage Object Admin` roles) and download the JSON file. Then we can add the remote storage:
 
 
 ```bash
@@ -80,7 +80,7 @@ You can now share the repository with your colleagues. They can clone the reposi
 dvc pull
 ```
 
-So in the end you only add the **`.dvc` files** to git and the data is stored in the remote storage and is still accessible for everyone. And if changes are made to the data you can just push and commit the changes to the remote storage and everyone can pull the changes.
+So in the end you only add the `.dvc` files to git and the data is stored in the remote storage and is still accessible for everyone. And if changes are made to the data you can just push and commit the changes to the remote storage and everyone can pull the changes.
 
 
 ## Pipelines
