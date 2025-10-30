@@ -5,3 +5,4 @@ google-cloud-storage
 xgboost
 dvc
 dvc-gs
+pytest
