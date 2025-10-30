@@ -60,4 +60,4 @@ Please make sure you have forked the repo and set up a new virtual environment. 
   source .venv/Scripts/activate
   python -m pip install --upgrade pip
   pip install -r requirements.txt
-  ```
+  ```trigger cml
